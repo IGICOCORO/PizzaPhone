@@ -7,12 +7,14 @@
 
     <application
         android:allowBackup="true"
+        android:usesCleartextTraffic="true"
         android:icon="@drawable/ic_pizza"
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_pizza"
         android:supportsRtl="true"
         android:theme="@style/Theme.PizzaPhone"
-        tools:ignore="ExtraText">
+        tools:ignore="ExtraText"
+        tools:targetApi="m">
         <activity android:name=".MainActivity"/>
         <activity android:name=".PizzalistActivity" />
         <activity android:name=".SplashScreen" android:theme="@style/Theme.AppCompat.Light.NoActionBar">

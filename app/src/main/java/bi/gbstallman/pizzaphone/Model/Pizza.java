@@ -5,11 +5,16 @@ public class Pizza {
     public String nom, ingredients, image;
     public Integer prix;
 
+
     public Pizza(String nom, String image, String ingredients, int prix) {
         this.nom = nom;
         this.ingredients = ingredients;
         this.prix = prix;
         this.image = image;
+
+    }
+
+    public Pizza() {
 
     }
 
