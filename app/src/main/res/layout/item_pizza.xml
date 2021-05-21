@@ -1,52 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/name_pizza"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="pizza name"
-        android:layout_gravity="center" />
-    <TextView
-        android:id="@+id/description_pizza"
-        style="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center"
-        android:text="pizza description" />
-
-    <TextView
-        android:id="@+id/prix_pizza"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center"
-        android:textSize="14dp"
-        android:textColor="@color/black"
-        android:layout_marginRight="56dp"
-        android:text="prix: "/>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+    android:layout_height="300dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="5dp"
+    android:elevation="20dp"
+    app:cardCornerRadius="5dp">
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="4dp"
-        app:cardCornerRadius="8dp"
-        android:layout_marginTop="20dp">
-
+        android:layout_height="match_parent">
         <ImageView
             android:id="@+id/image_pizza"
             android:layout_width="match_parent"
-            android:layout_height="246dp"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/ic_launcher" />
-    </androidx.cardview.widget.CardView>
-</LinearLayout>
+            android:layout_height="match_parent"
+            android:src="@mipmap/ic_launcher"
+            android:scaleType="centerCrop"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="#dfff"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:padding="5dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/name_pizza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vegetarienne"
+                    android:layout_weight="1"
+                    android:textSize="12pt"/>
+                <TextView
+                    android:id="@+id/prix_pizza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12.9 F"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/description_pizza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="7pt"
+                    android:layout_weight="1"
+                    android:text="Coulis, oignons, tomates fraiches, persillade, fromage, olives"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+                    <Button
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:text="-"/>
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textAlignment="center"
+                        android:textSize="10pt"
+                        android:gravity="center_horizontal" />
+                    <Button
+                        android:layout_width="40dp"
+                        android:layout_height="wrap_content"
+                        android:text="+"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
