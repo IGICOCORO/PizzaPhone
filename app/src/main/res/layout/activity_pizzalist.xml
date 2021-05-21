@@ -9,19 +9,57 @@
         android:id="@+id/txt_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tous les pizzas disponibles"
+        android:text="Tous nos Pizzas"
         android:textSize="12pt"
         android:gravity="center"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/txt_title">
+        android:layout_below="@id/txt_title"
+        android:layout_marginTop="4dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/pizzalist"
-            tools:listitem="@layout/item_pizza"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_pizza" />
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#dfff"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quantité: "
+            android:layout_margin="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_margin="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prix: "
+            android:layout_margin="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30F"
+            android:layout_margin="5dp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="Commander"
+            android:background="#37f"
+            android:textColor="#fff"
+            android:padding="10dp"
+            android:layout_margin="5dp"/>
+    </LinearLayout>
 </RelativeLayout>

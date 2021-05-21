@@ -53,10 +53,10 @@ public class PizzalistActivity extends AppCompatActivity {
                         JSONObject pizzaObject = response.getJSONObject(i);
 
                         Pizza pizza = new Pizza();
-                        pizza.setNom(pizzaObject.getString("nom").toString());
-                        pizza.setPrix(pizzaObject.getInt(String.valueOf("prix")));
-                        pizza.setIngredients(pizzaObject.getString("ingredients").toString());
-                        pizza.setImage(pizzaObject.getString("image").toString());
+                        pizza.setNom(pizzaObject.getString("nom"));
+                        pizza.setPrix(pizzaObject.getInt("prix"));
+                        pizza.setIngredients(pizzaObject.getString("ingredients"));
+                        pizza.setImage(pizzaObject.getString("image"));
                         pizzas.add(pizza);
 
                     } catch (JSONException e) {
