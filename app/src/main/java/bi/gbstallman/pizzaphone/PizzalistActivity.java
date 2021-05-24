@@ -7,70 +7,89 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import org.jetbrains.annotations.NotNull;
+
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
+
 ;
 import bi.gbstallman.pizzaphone.Adapter.Adapter;
 import bi.gbstallman.pizzaphone.Model.Pizza;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
-public class PizzalistActivity extends AppCompatActivity {
+    public class PizzalistActivity extends AppCompatActivity {
     RecyclerView recyclerView;
+    private String rappel;
     ArrayList<Pizza> pizzas;
-    private static  String JSON_Url = "http://daviddurand.info/D228/pizza";
     bi.gbstallman.pizzaphone.Adapter.Adapter adapter;
 
-    @Override
+        @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pizzalist);
 
         recyclerView = findViewById(R.id.pizzalist);
         pizzas = new ArrayList<>();
-        extractpizzas();
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         adapter = new Adapter(getApplicationContext(),pizzas);
         recyclerView.setAdapter(adapter);
+        extractpizzas();
     }
     private void extractpizzas() {
-        RequestQueue queue = Volley.newRequestQueue(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, JSON_Url, null, new Response.Listener<JSONArray>() {
+        OkHttpClient client = new OkHttpClient();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(Host.URL).newBuilder();
+        String url = urlBuilder.build().toString();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onResponse(JSONArray response) {
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject pizzaObject = response.getJSONObject(i);
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
 
-                        Pizza pizza = new Pizza();
-                        pizza.setNom(pizzaObject.getString("nom"));
-                        pizza.setPrix(pizzaObject.getInt("prix"));
-                        pizza.setIngredients(pizzaObject.getString("ingredients"));
-                        pizza.setImage(pizzaObject.getString("image"));
-                        pizzas.add(pizza);
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
-        }, new Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("===ERROR===", "onErrorResponse: "+error.getMessage());
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String json = response.body().string();
+                try {
+                    JSONObject json_items = new JSONObject(json);
+                    JSONObject json_item = new JSONObject(json);
+                    Iterator<String> keys = json_items.keys();
+                    Pizza pizza;
+                    while (keys.hasNext()){
+                        String key = keys.next();
+                        json_item = json_items.getJSONObject(key);
+                        pizza = new Pizza(
+                                json_item.getString("prix"),
+                                json_item.getString("ingredients"),
+                                json_item.getString("image"),
+                                key
+
+                        );
+                        Log.i("===Pizza===", pizza.toString());
+                        pizzas.add(pizza);
+                    }
+                    PizzalistActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+                } catch (Exception e){
+                    e.printStackTrace();
+            }
             }
         });
-        queue.add(jsonArrayRequest);
     }
-
-}
+    }

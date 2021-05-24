@@ -20,25 +20,27 @@ import bi.gbstallman.pizzaphone.R;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     LayoutInflater inflater;
-    ArrayList<Pizza> pizzas;
+     private ArrayList<Pizza> pizzas;
+    private static  String JSON_Url = "http://daviddurand.info/D228/pizza";
 
-    public Adapter(Context context, List<Pizza> pizzas){
+    public Adapter(Context context, ArrayList<Pizza> pizzas){
         this.inflater = LayoutInflater.from(context);
-        this.pizzas = (ArrayList<Pizza>) pizzas;
+        this.pizzas =  pizzas;
     }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_pizza, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item_pizza, parent, false);
         return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.name_pizza.setText(pizzas.get(position).getNom());
-        holder.description_pizza.setText(pizzas.get(position).getIngredients());
-        holder.prix_pizza.setText(pizzas.get(position).getPrix());
-        Picasso.get().load(pizzas.get(position).getImage()).into(holder.image_pizza);
+        final Pizza pizza = pizzas.get(position);
+        holder.description_pizza.setText(pizza.ingredients);
+        holder.name_pizza.setText(pizza.nom);
+        holder.prix_pizza.setText(pizza.prix);
+        Picasso.get().load(JSON_Url+"/"+(pizza.image)+".jpg").into(holder.image_pizza);
 
     }
 
@@ -47,8 +49,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return pizzas.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name_pizza,description_pizza;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView name_pizza;
+        TextView description_pizza;
         TextView prix_pizza;
         ImageView image_pizza;
 
