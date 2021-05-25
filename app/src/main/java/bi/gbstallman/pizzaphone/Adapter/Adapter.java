@@ -58,7 +58,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name_pizza = itemView.findViewById(R.id.name_pizza);
-            description_pizza  =  itemView.findViewById(R.id.description_pizza);
+            description_pizza  =  itemView.findViewById(R.id.ingredient_pizza);
             prix_pizza = itemView.findViewById(R.id.prix_pizza);
             image_pizza = itemView.findViewById(R.id.image_pizza);
         }
