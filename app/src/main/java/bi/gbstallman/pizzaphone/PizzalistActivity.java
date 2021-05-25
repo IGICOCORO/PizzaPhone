@@ -1,6 +1,7 @@
     package bi.gbstallman.pizzaphone;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,8 +29,8 @@ import okhttp3.Response;
 
     public class PizzalistActivity extends AppCompatActivity {
     RecyclerView recyclerView;
-    private String rappel;
     ArrayList<Pizza> pizzas;
+    private static  String JSON_Url = "http://daviddurand.info/D228/pizza";
     bi.gbstallman.pizzaphone.Adapter.Adapter adapter;
 
         @Override
@@ -39,7 +40,9 @@ import okhttp3.Response;
 
         recyclerView = findViewById(R.id.pizzalist);
         pizzas = new ArrayList<>();
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL));
 
         adapter = new Adapter(getApplicationContext(),pizzas);
         recyclerView.setAdapter(adapter);
@@ -47,7 +50,7 @@ import okhttp3.Response;
     }
     private void extractpizzas() {
         OkHttpClient client = new OkHttpClient();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(Host.URL).newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(JSON_Url).newBuilder();
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder()
@@ -56,7 +59,7 @@ import okhttp3.Response;
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-
+                Log.i("=== Error Parsing ===", "onFailure: ");
             }
 
             @Override
