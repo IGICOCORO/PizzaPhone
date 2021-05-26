@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-;
 import bi.gbstallman.pizzaphone.Adapter.Adapter;
 import bi.gbstallman.pizzaphone.Model.Pizza;
 import okhttp3.Call;
@@ -30,7 +29,6 @@ import okhttp3.Response;
     public class PizzalistActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<Pizza> pizzas;
-    private static  String JSON_Url = "http://daviddurand.info/D228/pizza";
     bi.gbstallman.pizzaphone.Adapter.Adapter adapter;
 
         @Override
@@ -50,7 +48,7 @@ import okhttp3.Response;
     }
     private void extractpizzas() {
         OkHttpClient client = new OkHttpClient();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(JSON_Url).newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(Host.URL).newBuilder();
         String url = urlBuilder.build().toString();
 
         Request request = new Request.Builder()
@@ -59,7 +57,7 @@ import okhttp3.Response;
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.i("=== Error Parsing ===", "onFailure: ");
+                Log.i("=== Error Parsing ===", "onFailure");
             }
 
             @Override
