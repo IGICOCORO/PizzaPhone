@@ -1,4 +1,4 @@
-    package bi.gbstallman.pizzaphone;
+package bi.gbstallman.pizzaphone;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+;
 import bi.gbstallman.pizzaphone.Adapter.Adapter;
 import bi.gbstallman.pizzaphone.Model.Pizza;
 import okhttp3.Call;
@@ -26,12 +27,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-    public class PizzalistActivity extends AppCompatActivity {
+public class PizzalistActivity extends AppCompatActivity {
     RecyclerView recyclerView;
+    String rappel;
     ArrayList<Pizza> pizzas;
     bi.gbstallman.pizzaphone.Adapter.Adapter adapter;
 
-        @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pizzalist);
@@ -51,13 +53,15 @@ import okhttp3.Response;
         HttpUrl.Builder urlBuilder = HttpUrl.parse(Host.URL).newBuilder();
         String url = urlBuilder.build().toString();
 
+
         Request request = new Request.Builder()
                 .url(url)
+                .addHeader("cookie",rappel)
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.i("=== Error Parsing ===", "onFailure");
+                Log.i("=== Error Parsing ===", "onFailure: ");
             }
 
             @Override
@@ -89,8 +93,8 @@ import okhttp3.Response;
                     });
                 } catch (Exception e){
                     e.printStackTrace();
-            }
+                }
             }
         });
     }
-    }
+}

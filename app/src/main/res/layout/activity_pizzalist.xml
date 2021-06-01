@@ -54,11 +54,10 @@
             android:layout_margin="5dp"/>
         <Button
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="35dp"
             android:text="Order"
             android:background="@drawable/rounded_button_order"
             android:textColor="#fff"
-            android:padding="10dp"
-            android:layout_margin="5dp"/>
+            android:layout_margin="4dp"/>
     </LinearLayout>
 </RelativeLayout>
