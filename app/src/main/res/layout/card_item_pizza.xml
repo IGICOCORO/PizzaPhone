@@ -67,25 +67,23 @@
                         android:layout_marginTop="16dp"
                         android:gravity="center">
                         <Button
-                            android:id="@+id/card_btn_moins"
+                            android:id="@+id/btn_prev"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
-                            android:background="@drawable/ic_left"
-                            android:textColor="#fff"/>
+                            android:background="@drawable/ic_left" />
                         <TextView
-                            android:id="@+id/card_qtt"
+                            android:id="@+id/txt_qtt"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
                             android:text="0"
                             android:textAlignment="center"
-                            android:textSize="10pt"
+                            android:textSize="8pt"
                             android:gravity="center_horizontal" />
                         <Button
-                            android:id="@+id/card_btn_plus"
+                            android:id="@+id/btn_next"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
-                            android:background="@drawable/ic_right"
-                            android:textColor="#fff"/>
+                            android:background="@drawable/ic_right" />
                     </LinearLayout>
 
 

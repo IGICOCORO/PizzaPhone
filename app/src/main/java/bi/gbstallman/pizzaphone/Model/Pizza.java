@@ -2,12 +2,15 @@ package bi.gbstallman.pizzaphone.Model;
 
 
 public class Pizza {
-    public String prix, ingredients, image, nom;
+    public String  ingredients, image, nom;
+    public Double prix;
+    public int quantite;
 
-    public Pizza(String prix, String ingredients, String image, String nom) {
+    public Pizza(Double  prix, String ingredients, String image, String nom) {
         this.prix = prix;
         this.ingredients = ingredients;
         this.image = image;
+        this.quantite = 0;
         this.nom = nom;
     }
 
