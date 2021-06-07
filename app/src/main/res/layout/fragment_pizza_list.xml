@@ -7,7 +7,8 @@
     tools:context=".Fragments.PizzaListFragment">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingBottom="60dp">
             <TextView
                 android:id="@+id/txt_title"
                 android:layout_width="match_parent"
@@ -41,12 +42,12 @@
                     android:text="Quantité: "
                     android:layout_margin="5dp"/>
                 <TextView
+                    android:id="@+id/txt_qtt_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
                     android:layout_margin="5dp"/>
                 <TextView
-                    android:id="@+id/txt_qtt_total"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Prix: "
@@ -62,10 +63,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:text="Order"
+                    android:onClick="order"
                     android:background="@drawable/rounded_button_order"
                     android:textColor="#fff"
-                    android:layout_margin="4dp"/>
+                    android:layout_margin="4dp" />
             </LinearLayout>
         </RelativeLayout>
+
 
 </FrameLayout>

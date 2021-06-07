@@ -4,13 +4,13 @@ package bi.gbstallman.pizzaphone.Model;
 public class Pizza {
     public String  ingredients, image, nom;
     public Double prix;
-    public int quantite;
+    public int quantity;
 
     public Pizza(Double  prix, String ingredients, String image, String nom) {
         this.prix = prix;
         this.ingredients = ingredients;
         this.image = image;
-        this.quantite = 0;
+        this.quantity = 0;
         this.nom = nom;
     }
 

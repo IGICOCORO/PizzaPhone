@@ -1,9 +1,11 @@
 package bi.gbstallman.pizzaphone.Fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,16 +14,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import bi.gbstallman.pizzaphone.Adapter.Adapter;
+import bi.gbstallman.pizzaphone.Adapter.AdapterPizzaList;
 import bi.gbstallman.pizzaphone.Host;
 import bi.gbstallman.pizzaphone.Model.Pizza;
 import bi.gbstallman.pizzaphone.R;
@@ -30,6 +35,7 @@ import okhttp3.Callback;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
@@ -37,29 +43,56 @@ public class PizzaListFragment extends Fragment {
     RecyclerView pizzalist;
     String rappel;
     private ArrayList<Pizza> pizzas;
-    bi.gbstallman.pizzaphone.Adapter.Adapter adapter;
+    AdapterPizzaList adapter;
     private TextView txt_prix_total, txt_qtt_total;
+    public Button btn_order;
     public MutableLiveData<Double> total = new MutableLiveData<>();
     public MutableLiveData<Integer> quantity = new MutableLiveData<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pizza_list, container, false);
         pizzalist = view.findViewById(R.id.pizzalist);
+        txt_prix_total = view.findViewById(R.id.txt_prix_total);
+        txt_qtt_total = view.findViewById(R.id.txt_qtt_total);
+        btn_order = view.findViewById(R.id.btn_order);
+
+        rappel = getActivity().getIntent().getStringExtra("cookie");
+
         pizzalist.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
         pizzalist.addItemDecoration(new DividerItemDecoration(getContext(),1));
 
         pizzas = new ArrayList<>();
-        adapter = new Adapter(getContext(),pizzas);
+        adapter = new AdapterPizzaList(this,pizzas);
         pizzalist.setAdapter(adapter);
 
         extractpizzas();
-        return view;
 
+        btn_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                order();
+            }
+        });
+
+        total.observe(getActivity(), new Observer<Double>() {
+            @Override
+            public void onChanged(Double price) {
+                txt_prix_total.setText(price.toString());
+            }
+        });
+        quantity.observe(getActivity(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer qtt) {
+                txt_qtt_total.setText(qtt.toString());
+            }
+        });
+        return view;
     }
 
-
     private void extractpizzas() {
+
         OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder urlBuilder = HttpUrl.parse(Host.URL).newBuilder();
         String url = urlBuilder.build().toString();
@@ -67,7 +100,7 @@ public class PizzaListFragment extends Fragment {
 
         Request request = new Request.Builder()
                 .url(url)
-                //.addHeader("cookie",rappel)
+                .addHeader("cookie",rappel)
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -104,4 +137,62 @@ public class PizzaListFragment extends Fragment {
         });
     }
 
+    public void updateQuantityPizza() {
+        int quantity = 0;
+        double total = 0.0;
+        for(Pizza pizza:pizzas){
+            if(pizza.quantity == 0) continue;
+            quantity += pizza.quantity;
+            total += pizza.quantity*pizza.prix;
+        }
+        this.quantity.setValue(quantity);
+        this.total.setValue(total);
+    }
+
+    public void order() {
+        StringBuilder order = new StringBuilder();
+        for(Pizza pizza:pizzas){
+            if(pizza.quantity == 0) continue;
+            StringBuilder str_pizza = new StringBuilder();
+            for (int i = 0; i<pizza.quantity; i++){
+                str_pizza.append(pizza.nom).append(",");
+            }
+            order.append(str_pizza);
+        }
+        order = new StringBuilder(order.substring(0, order.length() - 1));
+        OkHttpClient client = new OkHttpClient();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(Host.URL + "/order/"+order).newBuilder();
+        String url = urlBuilder.build().toString();
+        final RequestBody body = RequestBody.create("", null);
+        Request request = new Request.Builder().url(url).addHeader("cookie", rappel).post(body).build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, final IOException e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String json = response.body().string();
+                Log.i("===Pizza==", json);
+                Host.toast(getActivity(), "la commande a été soumise", Toast.LENGTH_LONG);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(Pizza pizza:pizzas){
+                            pizza.quantity = 0;
+                        }
+                        total.setValue(0.);
+                        quantity.setValue(0);
+                    }
+                });
+            }
+        });
+    }
 }

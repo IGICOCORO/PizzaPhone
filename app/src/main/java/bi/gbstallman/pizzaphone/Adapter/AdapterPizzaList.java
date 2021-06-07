@@ -16,18 +16,20 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import bi.gbstallman.pizzaphone.Fragments.PizzaListFragment;
 import bi.gbstallman.pizzaphone.Host;
 import bi.gbstallman.pizzaphone.Model.Pizza;
 import bi.gbstallman.pizzaphone.R;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-    PizzalistActivity activity;
-    LayoutInflater inflater;
+public class AdapterPizzaList extends RecyclerView.Adapter<AdapterPizzaList.ViewHolder> {
+    Button btn_order;
+    PizzaListFragment activity;
      private final ArrayList<Pizza> pizzas;
 
-    public Adapter(Context context, ArrayList<Pizza> pizzas){
-        this.inflater = LayoutInflater.from(context);
+    public AdapterPizzaList(PizzaListFragment activity, ArrayList<Pizza> pizzas){
         this.pizzas =  pizzas;
+        this.activity = activity;
+        this.btn_order = btn_order;
     }
     @NonNull
     @Override
@@ -43,23 +45,23 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.ingredient_pizza.setText(pizza.ingredients);
         holder.name_pizza.setText(pizza.nom);
         holder.prix_pizza.setText(pizza.prix.toString());
-        holder.txt_qtt.setText(""+pizza.quantite);
+        holder.txt_qtt.setText(""+pizza.quantity);
         holder.btn_prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(pizza.quantite>0) {
-                    pizza.quantite--;
-                    activity.updateQuantity();
-                    holder.txt_qtt.setText(""+pizza.quantite);
+                if(pizza.quantity>0) {
+                    pizza.quantity--;
+                    activity.updateQuantityPizza();
+                    holder.txt_qtt.setText(""+pizza.quantity);
                 }
             }
         });
         holder.btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pizza.quantite++;
-                activity.updateQuantity();
-                holder.txt_qtt.setText(""+pizza.quantite);
+                pizza.quantity++;
+                activity.updateQuantityPizza();
+                holder.txt_qtt.setText(""+pizza.quantity);
             }
         });
         Picasso.get().load(Host.URL +"/"+(pizza.image)+".jpg").into(holder.image_pizza);
@@ -74,7 +76,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView name_pizza,txt_qtt,ingredient_pizza;
         TextView prix_pizza;
-        Button btn_next, btn_prev;
+        Button btn_next, btn_prev,btn_order;
         ImageView image_pizza;
 
         public ViewHolder(@NonNull View itemView) {
@@ -86,6 +88,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             txt_qtt = itemView.findViewById(R.id.txt_qtt);
             btn_next = itemView.findViewById(R.id.btn_next);
             btn_prev = itemView.findViewById(R.id.btn_prev);
+            btn_order = itemView.findViewById(R.id.btn_order);
         }
     }
 }
