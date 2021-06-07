@@ -25,16 +25,16 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_bold"
                 android:text="1."
-                android:textColor="#000"
+                android:textColor="#fdb501"
                 android:textSize="24dp" />
 
             <TextView
-                android:id="@+id/order_pizza_list"
+                android:id="@+id/references"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_bold"
                 android:text="Vegetarienne,chèvre,champignons,fromage"
-                android:textColor="#000"
+                android:textColor="#fdb501"
                 android:textSize="24dp" />
 
         </LinearLayout>
@@ -44,7 +44,6 @@
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
             <TextView
-                android:id="@+id/text_total"
                 android:layout_width="wrap_content"
                 android:textSize="20dp"
                 android:textColor="#6A90B5"
@@ -55,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
-                    android:id="@+id/prix_total_commande"
+                    android:id="@+id/total_commande"
                     android:layout_width="wrap_content"
                     android:textSize="20dp"
                     android:textColor="#6A90B5"
@@ -67,14 +66,13 @@
 
             <RelativeLayout
                android:layout_width="wrap_content"
-               android:layout_height="wrap_content">
+               android:layout_height="match_parent">
                <TextView
-                   android:id="@+id/time_commande"
+                   android:id="@+id/date_commande"
                    android:layout_height="match_parent"
                    android:layout_alignParentEnd="true"
                    android:textSize="7pt"
-                   android:layout_weight="1"
-                   android:text="10h:30"
+                   android:text="Le 07/06/2021"
                    android:layout_width="wrap_content"
                    android:layout_alignParentRight="true" />
 
