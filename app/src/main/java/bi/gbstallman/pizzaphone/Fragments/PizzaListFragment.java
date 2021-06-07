@@ -1,28 +1,30 @@
-package bi.gbstallman.pizzaphone;
+package bi.gbstallman.pizzaphone.Fragments;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import org.jetbrains.annotations.NotNull;
-
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-;
 import bi.gbstallman.pizzaphone.Adapter.Adapter;
+import bi.gbstallman.pizzaphone.Host;
 import bi.gbstallman.pizzaphone.Model.Pizza;
+import bi.gbstallman.pizzaphone.R;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -30,48 +32,33 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class PizzalistActivity extends AppCompatActivity {
-    RecyclerView recyclerView;
+
+public class PizzaListFragment extends Fragment {
+    RecyclerView pizzalist;
     String rappel;
     private ArrayList<Pizza> pizzas;
     bi.gbstallman.pizzaphone.Adapter.Adapter adapter;
     private TextView txt_prix_total, txt_qtt_total;
     public MutableLiveData<Double> total = new MutableLiveData<>();
     public MutableLiveData<Integer> quantity = new MutableLiveData<>();
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pizzalist);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_pizza_list, container, false);
+        pizzalist = view.findViewById(R.id.pizzalist);
+        pizzalist.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
+        pizzalist.addItemDecoration(new DividerItemDecoration(getContext(),1));
 
-        txt_prix_total = findViewById(R.id.txt_prix_total);
-        txt_qtt_total = findViewById(R.id.txt_qtt_total);
-
-        rappel = getIntent().getStringExtra("rappel");
-
-        recyclerView = findViewById(R.id.pizzalist);
         pizzas = new ArrayList<>();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL));
+        adapter = new Adapter(getContext(),pizzas);
+        pizzalist.setAdapter(adapter);
 
-        adapter = new Adapter(getApplicationContext(),pizzas);
-        recyclerView.setAdapter(adapter);
         extractpizzas();
+        return view;
 
-        total.observe(this, new Observer<Double>() {
-            @Override
-            public void onChanged(Double value) {
-                txt_prix_total.setText(value.toString());
-            }
-        });
-        quantity.observe(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                txt_qtt_total.setText(integer.toString());
-            }
-        });
     }
+
+
     private void extractpizzas() {
         OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder urlBuilder = HttpUrl.parse(Host.URL).newBuilder();
@@ -80,7 +67,7 @@ public class PizzalistActivity extends AppCompatActivity {
 
         Request request = new Request.Builder()
                 .url(url)
-               //.addHeader("cookie",rappel)
+                //.addHeader("cookie",rappel)
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -109,27 +96,12 @@ public class PizzalistActivity extends AppCompatActivity {
                         Log.i("===Pizza===", pizza.toString());
                         pizzas.add(pizza);
                     }
-                    PizzalistActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
+                    getActivity().runOnUiThread((Runnable) () -> adapter.notifyDataSetChanged());
                 } catch (Exception e){
                     e.printStackTrace();
                 }
             }
         });
     }
-    public void updateQuantity(){
-        int qtt = 0;
-        double total = 0.0;
-        for(Pizza pizza:pizzas){
-            if(pizza.quantite == 0) continue;
-            qtt += pizza.quantite;
-            total += pizza.quantite*pizza.prix;
-        }
-        this.quantity.setValue(qtt);
-        this.total.setValue(total);
-    }
+
 }
