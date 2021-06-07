@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import bi.gbstallman.pizzaphone.Host;
 import bi.gbstallman.pizzaphone.Model.Pizza;
-import bi.gbstallman.pizzaphone.PizzalistActivity;
 import bi.gbstallman.pizzaphone.R;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {

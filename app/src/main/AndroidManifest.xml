@@ -19,7 +19,6 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"></activity>
         <activity android:name=".AuthActivity" />
-        <activity android:name=".PizzalistActivity" />
         <activity
             android:name=".SplashScreen"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
