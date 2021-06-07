@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import bi.gbstallman.pizzaphone.Host;
 import bi.gbstallman.pizzaphone.Model.Pizza;
@@ -23,9 +22,9 @@ import bi.gbstallman.pizzaphone.PizzalistActivity;
 import bi.gbstallman.pizzaphone.R;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-    private PizzalistActivity activity;
+    PizzalistActivity activity;
     LayoutInflater inflater;
-     private ArrayList<Pizza> pizzas;
+     private final ArrayList<Pizza> pizzas;
 
     public Adapter(Context context, ArrayList<Pizza> pizzas){
         this.inflater = LayoutInflater.from(context);
@@ -47,7 +46,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         holder.prix_pizza.setText(pizza.prix.toString());
         holder.txt_qtt.setText(""+pizza.quantite);
         holder.btn_prev.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
                 if(pizza.quantite>0) {
