@@ -153,16 +153,17 @@ public class PizzaListFragment extends Fragment {
     }
 
     public void order() {
-        StringBuilder order = new StringBuilder();
+        if(quantity.getValue() == null) return;
+        String order = "";
         for(Pizza pizza:pizzas){
             if(pizza.quantity == 0) continue;
-            StringBuilder str_pizza = new StringBuilder();
+            String string_pizza = "";
             for (int i = 0; i<pizza.quantity; i++){
-                str_pizza.append(pizza.nom).append(",");
+                order+=pizza.nom+",";
             }
-            order.append(str_pizza);
+            order += string_pizza;
         }
-        order = new StringBuilder(order.substring(0, order.length() - 1));
+        order = order.substring(0, order.length()-1);
         OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder urlBuilder = HttpUrl.parse(Host.URL + "/order/"+order).newBuilder();
         String url = urlBuilder.build().toString();
@@ -189,7 +190,7 @@ public class PizzaListFragment extends Fragment {
                     @Override
                     public void run() {
                         for(Pizza pizza:pizzas){
-                            pizza.quantity = 0;
+                            if(pizza.quantity == 0) continue;
                         }
                         total.setValue(0.);
                         quantity.setValue(0);

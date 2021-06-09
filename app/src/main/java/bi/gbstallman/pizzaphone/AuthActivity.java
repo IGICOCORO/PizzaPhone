@@ -25,18 +25,19 @@ import okhttp3.Response;
 
 
 public class AuthActivity extends AppCompatActivity {
-    EditText username;
+    private EditText username ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+        username = findViewById(R.id.username);
     }
 // pizzaliste est une fonction qui sert d'extraire et de lister la carte des pizzas disponible
     public void pizzaliste(View view) {
         openDialog();
         OkHttpClient client = new OkHttpClient();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(Host.URL + "/login/"+username).newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(Host.URL + "/login/"+username.getText()).newBuilder();
         String url = urlBuilder.build().toString();
         RequestBody body = RequestBody.create("", null);
         Request request = new Request.Builder().url(url).post(body).build();
@@ -66,8 +67,6 @@ public class AuthActivity extends AppCompatActivity {
                                 intent.putExtra("cookie", rappel);
                                 startActivity(intent);
                                 AuthActivity.this.finish();
-                            } else {
-                                Host.toast(AuthActivity.this, "verifier votre identifiant", Toast.LENGTH_LONG);
                             }
                         } catch (final Exception e) {
                             Host.toast(AuthActivity.this, e.getMessage(), Toast.LENGTH_LONG);
