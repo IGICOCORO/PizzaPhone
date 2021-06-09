@@ -8,10 +8,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Objects;
 
+import bi.gbstallman.pizzaphone.Dialogs.DialogAuth;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.HttpUrl;
@@ -29,10 +32,9 @@ public class AuthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
     }
-
+// pizzaliste est une fonction qui sert d'extraire et de lister la carte des pizzas disponible
     public void pizzaliste(View view) {
-        Toast.makeText(AuthActivity.this, "connexion en cours...", Toast.LENGTH_SHORT).show();
-
+        openDialog();
         OkHttpClient client = new OkHttpClient();
         HttpUrl.Builder urlBuilder = HttpUrl.parse(Host.URL + "/login/"+username).newBuilder();
         String url = urlBuilder.build().toString();
@@ -51,10 +53,10 @@ public class AuthActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String json = response.body().string();
+            public void onResponse(Call call, @NotNull Response response) throws IOException {
+                String json = Objects.requireNonNull(response.body()).string();
                 String rappel = "";
-                for(String cookie: response.headers().get("Set-Cookie").split(";")) {
+                for(String cookie: Objects.requireNonNull(response.headers().get("Set-Cookie")).split(";")) {
                     if (cookie.contains("PHPSESSID")) {
                         rappel = cookie;
                         try {
@@ -65,7 +67,7 @@ public class AuthActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 AuthActivity.this.finish();
                             } else {
-                                Host.toast(AuthActivity.this, "les infos semblent incorrectes", Toast.LENGTH_LONG);
+                                Host.toast(AuthActivity.this, "verifier votre identifiant", Toast.LENGTH_LONG);
                             }
                         } catch (final Exception e) {
                             Host.toast(AuthActivity.this, e.getMessage(), Toast.LENGTH_LONG);
@@ -76,5 +78,10 @@ public class AuthActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void openDialog() {
+        DialogAuth dialog = new DialogAuth();
+        dialog.show(getSupportFragmentManager(),"dialog connexion");
     }
 }

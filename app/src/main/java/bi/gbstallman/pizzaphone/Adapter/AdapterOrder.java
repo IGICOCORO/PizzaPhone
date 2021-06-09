@@ -38,7 +38,6 @@ public class AdapterOrder extends RecyclerView.Adapter<AdapterOrder.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Order order = orders.get(position);
-        holder.id_commandes.setText(order.id_commande);
         holder.total_commande.setText(order.total);
         holder.references.setText(order.toString());
         holder.date_commande.setText(order.time);
@@ -54,14 +53,12 @@ public class AdapterOrder extends RecyclerView.Adapter<AdapterOrder.ViewHolder> 
         this.orders = orders;
     }
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView id_commandes;
         public TextView references;
         public  TextView total_commande;
         public TextView date_commande;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            id_commandes = itemView.findViewById(R.id.id_commande);
             references  =  itemView.findViewById(R.id.references);
             total_commande = itemView.findViewById(R.id.total_commande);
             date_commande = itemView.findViewById(R.id.date_commande);

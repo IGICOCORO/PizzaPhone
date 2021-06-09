@@ -1,5 +1,6 @@
 package bi.gbstallman.pizzaphone.Fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -22,9 +23,9 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 import bi.gbstallman.pizzaphone.Adapter.AdapterPizzaList;
 import bi.gbstallman.pizzaphone.Host;
@@ -77,12 +78,14 @@ public class PizzaListFragment extends Fragment {
         });
 
         total.observe(getActivity(), new Observer<Double>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onChanged(Double price) {
                 txt_prix_total.setText(price.toString());
             }
         });
         quantity.observe(getActivity(), new Observer<Integer>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onChanged(Integer qtt) {
                 txt_qtt_total.setText(qtt.toString());
@@ -110,7 +113,7 @@ public class PizzaListFragment extends Fragment {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                String json = response.body().string();
+                String json = Objects.requireNonNull(response.body()).string();
                 try {
                     JSONObject json_items = new JSONObject(json);
                     JSONObject json_item = new JSONObject(json);
@@ -168,7 +171,7 @@ public class PizzaListFragment extends Fragment {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, final IOException e) {
+            public void onFailure(@NotNull Call call, final IOException e) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -178,10 +181,10 @@ public class PizzaListFragment extends Fragment {
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String json = response.body().string();
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String json = Objects.requireNonNull(response.body()).string();
                 Log.i("===Pizza==", json);
-                Host.toast(getActivity(), "la commande a été soumise", Toast.LENGTH_LONG);
+                Host.toast(getActivity() ,"la commande a été envoyée avec succès",Toast.LENGTH_LONG);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

@@ -29,7 +29,6 @@ public class AdapterPizzaList extends RecyclerView.Adapter<AdapterPizzaList.View
     public AdapterPizzaList(PizzaListFragment activity, ArrayList<Pizza> pizzas){
         this.pizzas =  pizzas;
         this.activity = activity;
-        this.btn_order = btn_order;
     }
     @NonNull
     @Override
@@ -45,14 +44,14 @@ public class AdapterPizzaList extends RecyclerView.Adapter<AdapterPizzaList.View
         holder.ingredient_pizza.setText(pizza.ingredients);
         holder.name_pizza.setText(pizza.nom);
         holder.prix_pizza.setText(pizza.prix.toString());
-        holder.txt_qtt.setText(""+pizza.quantity);
+        holder.txt_quantity.setText(""+pizza.quantity);
         holder.btn_prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(pizza.quantity>0) {
                     pizza.quantity--;
                     activity.updateQuantityPizza();
-                    holder.txt_qtt.setText(""+pizza.quantity);
+                    holder.txt_quantity.setText(""+pizza.quantity);
                 }
             }
         });
@@ -61,7 +60,7 @@ public class AdapterPizzaList extends RecyclerView.Adapter<AdapterPizzaList.View
             public void onClick(View v) {
                 pizza.quantity++;
                 activity.updateQuantityPizza();
-                holder.txt_qtt.setText(""+pizza.quantity);
+                holder.txt_quantity.setText(""+pizza.quantity);
             }
         });
         Picasso.get().load(Host.URL +"/"+(pizza.image)+".jpg").into(holder.image_pizza);
@@ -74,9 +73,9 @@ public class AdapterPizzaList extends RecyclerView.Adapter<AdapterPizzaList.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name_pizza,txt_qtt,ingredient_pizza;
+        TextView name_pizza,txt_quantity,ingredient_pizza;
         TextView prix_pizza;
-        Button btn_next, btn_prev,btn_order;
+        Button btn_next, btn_prev;
         ImageView image_pizza;
 
         public ViewHolder(@NonNull View itemView) {
@@ -85,10 +84,9 @@ public class AdapterPizzaList extends RecyclerView.Adapter<AdapterPizzaList.View
             ingredient_pizza  =  itemView.findViewById(R.id.ingredient_pizza);
             prix_pizza = itemView.findViewById(R.id.prix_pizza);
             image_pizza = itemView.findViewById(R.id.image_pizza);
-            txt_qtt = itemView.findViewById(R.id.txt_qtt);
+            txt_quantity = itemView.findViewById(R.id.txt_quantity);
             btn_next = itemView.findViewById(R.id.btn_next);
             btn_prev = itemView.findViewById(R.id.btn_prev);
-            btn_order = itemView.findViewById(R.id.btn_order);
         }
     }
 }

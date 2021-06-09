@@ -71,7 +71,7 @@
                             android:layout_height="60dp"
                             android:background="@drawable/ic_left" />
                         <TextView
-                            android:id="@+id/txt_qtt"
+                            android:id="@+id/txt_quantity"
                             android:layout_width="50dp"
                             android:layout_height="wrap_content"
                             android:text="0"
